@@ -1,0 +1,134 @@
+=========================================================================
+1. Write SQL Query to get the Second Highest Salary among all Employees?
+=========================================================================
+
+create table all_employee_salary
+(
+employee_id integer,
+salary integer
+)
+
+insert into all_employee_salary
+values
+(1,10000),
+(2,20000),
+(3,30000),
+(4,40000),
+(5,10000),
+(6,20000),
+(7,30000),
+(8,40000),
+(9,10000),
+(10,20000)
+
+Solution ->
+
+Select max(salary) from all_employee_salary where salary not in (Select max(salary) from all_employee_salary)
+
+Or
+
+Select max(salary) from all_employee_salary where salary <> (Select max(salary) from all_employee_salary)
+
+===============================================================================
+2. Write a SQL Query to find Max Salary and Department ID for each Department?
+===============================================================================
+
+create table employee_salary
+(
+employee_id integer,
+department_id integer,
+salary integer
+)
+
+insert into employee_salary
+values
+(1,1,10000),
+(2,1,20000),
+(3,1,30000),
+(4,1,40000),
+(5,2,10000),
+(6,2,20000),
+(7,2,30000),
+(8,2,40000),
+(9,3,10000),
+(10,3,20000)
+
+Solution ->
+
+select
+department_id,
+salary
+from
+(
+select department_id,
+salary,
+rank() over(partition by department_id order by salary desc) rank_salary
+from employee_salary
+)
+where rank_salary=1
+
+Alternate Query ->
+
+select max(salary),department_id
+from employee_salary
+group by department_id
+
+
+================================================================================
+3. Query to find Records in Table A not in Table B -
+================================================================================
+
+create table A
+(
+ID integer
+)
+
+create table B
+(
+ID integer
+)
+
+insert into
+A
+values
+(10),
+(20),
+(30)
+
+insert into
+B
+values
+(15),
+(30),
+(45)
+
+Solution ->
+
+a. using join
+
+select A.ID,B.ID
+from B right outer join A
+on B.ID = A.ID
+where B.ID IS NULL
+
+b. using minus
+
+SELECT *
+FROM A
+minus
+SELECT *
+FROM B
+
+c. using except
+
+SELECT *
+FROM A
+except
+SELECT *
+FROM B
+
+d. using not in
+
+select * from A
+where ID not in
+(select * from B)
