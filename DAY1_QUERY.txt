@@ -1,5 +1,5 @@
 =========================================================================
-1. Write SQL Query to get the Second Highest Salary among all Employees?
+** 1. Write SQL Query to get the Second Highest Salary among all Employees?
 =========================================================================
 
 create table all_employee_salary
@@ -132,5 +132,6 @@ d. using not in
 select * from A
 where ID not in
 (select * from B)
+
 
 
